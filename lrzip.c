@@ -792,7 +792,6 @@ bool decompress_file(rzip_control *control)
 	char *tmp, *tmpoutfile, *infilecopy = NULL;
 	int fd_in, fd_out = -1, fd_hist = -1;
 	i64 expected_size = 0, free_space;
-	struct statvfs fbuf;
 
 	if (!STDIN && !IS_FROM_FILE) {
 		struct stat fdin_stat;
