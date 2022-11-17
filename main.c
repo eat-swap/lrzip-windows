@@ -308,7 +308,6 @@ int main(int argc, char *argv[])
 	bool options_file = false, conf_file_compression_set = false; /* for environment and tracking of compression setting */
 	struct timeval start_time, end_time;
 	double seconds,total_time; // for timers
-	bool nice_set = false;
 	int c, i;
 	int hours,minutes;
 	extern int optind;
@@ -585,22 +584,6 @@ int main(int argc, char *argv[])
 	/* Set the main nice value to half that of the backend threads since
 	 * the rzip stage is usually the rate limiting step */
 	control->current_priority = getpriority(PRIO_PROCESS, 0);
-	if (nice_set) {
-		if (!NO_COMPRESS) {
-			/* If niceness can't be set. just reset process priority */
-			if (unlikely(setpriority(PRIO_PROCESS, 0, control->nice_val/2) == -1)) {
-				print_err("Warning, unable to set nice value %d...Resetting to %d\n",
-					control->nice_val, control->current_priority);
-				setpriority(PRIO_PROCESS, 0, (control->nice_val=control->current_priority));
-			}
-		} else {
-			if (unlikely(setpriority(PRIO_PROCESS, 0, control->nice_val) == -1)) {
-				print_err("Warning, unable to set nice value %d...Resetting to %d\n",
-					control->nice_val, control->current_priority);
-				setpriority(PRIO_PROCESS, 0, (control->nice_val=control->current_priority));
-			}
-		}
-	}
 
 	/* One extra iteration for the case of no parameters means we will default to stdin/out */
 	for (i = 0; i <= argc; i++) {
