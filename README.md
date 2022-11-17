@@ -7,6 +7,15 @@ effectively compress your files (ie: faster / smaller size), especially if the
 filesize(s) exceed 100 MB. You can either choose to optimise for speed (fast
 compression / decompression) or size, but not both.
 
+### Build for MinGW targets
+
+To be filled in.
+
+#### Special thanks
+
+- [mman-win32](https://github.com/alitrack/mman-win32) for the Windows mmap
+  implementation. (MIT License)
+
 
 ### haneefmubarak's TL;DR for the long explanation:
 
