@@ -69,6 +69,7 @@ lrzip_LDADD = libtmplrzip.la
 if STATIC
   lrzip_LDFLAGS = -all-static
 endif
+LDFLAGS = -lws2_32
 
 dist_doc_DATA = \
   AUTHORS \
