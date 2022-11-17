@@ -449,12 +449,7 @@ int main(int argc, char *argv[])
 				failure("Extra characters after ramsize: \'%s\'\n", endptr);
 			break;
 		case 'N':
-			nice_set = true;
-			control->nice_val = strtol(optarg, &endptr, 10);
-			if (control->nice_val < PRIO_MIN || control->nice_val > PRIO_MAX)
-				failure("Invalid nice value (must be %d...%d)\n", PRIO_MIN, PRIO_MAX);
-			if (*endptr)
-				failure("Extra characters after nice level: \'%s\'\n", endptr);
+			printf("Skipped setting nice as not supported on Windows.\n");
 			break;
 		case 'o':
 			if (control->outdir)
