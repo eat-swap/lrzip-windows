@@ -57,6 +57,11 @@
 # include <ctype.h>
 #endif
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "mman.h"
+#endif
+#include "misc.h"
+
 /* Macros for testing parameters */
 #define isparameter( parmstring, value )	(!strcasecmp( parmstring, value ))
 #define iscaseparameter( parmvalue, value )	(!strcmp( parmvalue, value ))
@@ -163,18 +168,8 @@ size_t round_up_page(rzip_control *control, size_t len)
 
 bool get_rand(rzip_control *control, uchar *buf, int len)
 {
-	int fd, i;
-
-	fd = open("/dev/urandom", O_RDONLY);
-	if (fd == -1) {
-		for (i = 0; i < len; i++)
-			buf[i] = (uchar)random();
-	} else {
-		if (unlikely(read(fd, buf, len) != len))
-			fatal_return(("Failed to read fd in get_rand\n"), false);
-		if (unlikely(close(fd)))
-			fatal_return(("Failed to close fd in get_rand\n"), false);
-	}
+	for (int i = 0; i < len; i++)
+		buf[i] = (uchar)get_random_32();
 	return true;
 }
 
