@@ -583,7 +583,7 @@ int main(int argc, char *argv[])
 
 	/* Set the main nice value to half that of the backend threads since
 	 * the rzip stage is usually the rate limiting step */
-	control->current_priority = getpriority(PRIO_PROCESS, 0);
+	control->current_priority = 0;
 
 	/* One extra iteration for the case of no parameters means we will default to stdin/out */
 	for (i = 0; i <= argc; i++) {
