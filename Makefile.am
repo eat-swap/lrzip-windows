@@ -52,6 +52,8 @@ libtmplrzip_la_SOURCES = \
   sha4.h \
   mman.c \
   mman.h \
+  misc.cpp \
+  misc.h \
   libzpaq/libzpaq.cpp \
   libzpaq/libzpaq.h
 

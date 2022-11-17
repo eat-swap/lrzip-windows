@@ -62,6 +62,8 @@
 #include "mman.h"
 #endif
 
+#include "misc.h"
+
 #ifndef MAP_ANONYMOUS
 # define MAP_ANONYMOUS MAP_ANON
 #endif
@@ -782,10 +784,8 @@ static inline void hash_search(rzip_control *control, struct rzip_state *st,
 
 static inline void init_hash_indexes(struct rzip_state *st)
 {
-	int i;
-
-	for (i = 0; i < 256; i++)
-		st->hash_index[i] = ((random() << 16) ^ random());
+	for (int i = 0; i < 256; i++)
+		st->hash_index[i] = get_random_32();
 }
 
 #if !defined(__linux)

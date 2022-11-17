@@ -57,6 +57,8 @@
 #include "util.h"
 #include "stream.h"
 
+#include "misc.h"
+
 /* needed for CRC routines */
 #include "lzma/C/7zCrc.h"
 
@@ -304,6 +306,8 @@ static const char *coptions = "bcCdefghHikKlLnN:o:O:p:PrS:tTUm:vVw:z?123456789";
 
 int main(int argc, char *argv[])
 {
+	init_rand();
+
 	bool lrzcat = false, compat = false, recurse = false;
 	bool options_file = false, conf_file_compression_set = false; /* for environment and tracking of compression setting */
 	struct timeval start_time, end_time;
