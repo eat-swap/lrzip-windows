@@ -182,20 +182,20 @@ bool read_config(rzip_control *control)
 	char line[255];
 	FILE *fp;
 
-	fp = fopen("lrzip.conf", "r");
+	fp = fopen("lrzip.conf", "rb");
 	if (fp)
 		fprintf(control->msgout, "Using configuration file ./lrzip.conf\n");
 	if (fp == NULL) {
 		HOME=getenv("HOME");
 		if (HOME) {
 			snprintf(homeconf, sizeof(homeconf), "%s/.lrzip/lrzip.conf", HOME);
-			fp = fopen(homeconf, "r");
+			fp = fopen(homeconf, "rb");
 			if (fp)
 				fprintf(control->msgout, "Using configuration file %s\n", homeconf);
 		}
 	}
 	if (fp == NULL) {
-		fp = fopen("/etc/lrzip/lrzip.conf", "r");
+		fp = fopen("/etc/lrzip/lrzip.conf", "rb");
 		if (fp)
 			fprintf(control->msgout, "Using configuration file /etc/lrzip/lrzip.conf\n");
 	}

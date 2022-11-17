@@ -461,7 +461,7 @@ i64 runzip_fd(rzip_control *control, int fd_in, int fd_hist, i64 expected_size)
 			memcpy(md5_stored, control->md5_resblock, MD5_DIGEST_SIZE);
 			if (unlikely(seekto_fdhist(control, 0) == -1))
 				fatal_return(("Failed to seekto_fdhist in runzip_fd\n"), -1);
-			if (unlikely((md5_fstream = fdopen(fd_hist, "r")) == NULL))
+			if (unlikely((md5_fstream = fdopen(fd_hist, "rb")) == NULL))
 				fatal_return(("Failed to fdopen fd_hist in runzip_fd\n"), -1);
 			if (unlikely(md5_stream(md5_fstream, control->md5_resblock)))
 				fatal_return(("Failed to md5_stream in runzip_fd\n"), -1);

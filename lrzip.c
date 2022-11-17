@@ -422,7 +422,7 @@ static bool dump_tmpoutfile(rzip_control *control)
 	if (unlikely(fd_out == -1))
 		fatal_return(("Failed: No temporary outfile created, unable to do in ram\n"), false);
 	/* flush anything not yet in the temporary file */
-	tmpoutfp = fdopen(fd_out, "r");
+	tmpoutfp = fdopen(fd_out, "rb");
 	if (unlikely(tmpoutfp == NULL))
 		fatal_return(("Failed to fdopen out tmpfile\n"), false);
 	rewind(tmpoutfp);
@@ -573,7 +573,7 @@ bool read_tmpinfile(rzip_control *control, int fd_in)
 		return false;
 	if (control->flags & FLAG_SHOW_PROGRESS)
 		fprintf(control->msgout, "Copying from stdin.\n");
-	tmpinfp = fdopen(fd_in, "w+");
+	tmpinfp = fdopen(fd_in, "w+b");
 	if (unlikely(tmpinfp == NULL))
 		fatal_return(("Failed to fdopen in tmpfile\n"), false);
 
@@ -859,7 +859,7 @@ bool decompress_file(rzip_control *control)
 		if (unlikely(!open_tmpinbuf(control)))
 			return false;
 	} else {
-		fd_in = open(infilecopy, O_RDONLY);
+		fd_in = open(infilecopy, O_BINARY | O_RDONLY);
 		if (unlikely(fd_in == -1)) {
 			fatal_return(("Failed to open %s\n", infilecopy), false);
 		}
@@ -867,11 +867,11 @@ bool decompress_file(rzip_control *control)
 	control->fd_in = fd_in;
 
 	if (!(TEST_ONLY | STDOUT)) {
-		fd_out = open(control->outfile, O_WRONLY | O_CREAT | O_EXCL, 0666);
+		fd_out = open(control->outfile, O_BINARY | O_WRONLY | O_CREAT | O_EXCL, 0666);
 		if (FORCE_REPLACE && (-1 == fd_out) && (EEXIST == errno)) {
 			if (unlikely(unlink(control->outfile)))
 				fatal_return(("Failed to unlink an existing file: %s\n", control->outfile), false);
-			fd_out = open(control->outfile, O_WRONLY | O_CREAT | O_EXCL, 0666);
+			fd_out = open(control->outfile, O_BINARY | O_WRONLY | O_CREAT | O_EXCL, 0666);
 		}
 		if (unlikely(fd_out == -1)) {
 			/* We must ensure we don't delete a file that already
@@ -879,7 +879,7 @@ bool decompress_file(rzip_control *control)
 			control->flags |= FLAG_KEEP_BROKEN;
 			fatal_return(("Failed to create %s\n", control->outfile), false);
 		}
-		fd_hist = open(control->outfile, O_RDONLY);
+		fd_hist = open(control->outfile, O_BINARY | O_RDONLY);
 		if (unlikely(fd_hist == -1))
 			fatal_return(("Failed to open history file %s\n", control->outfile), false);
 
@@ -892,7 +892,7 @@ bool decompress_file(rzip_control *control)
 		if (fd_out == -1) {
 			fd_hist = -1;
 		} else {
-			fd_hist = open(control->outfile, O_RDONLY);
+			fd_hist = open(control->outfile, O_BINARY | O_RDONLY);
 			if (unlikely(fd_hist == -1))
 				fatal_return(("Failed to open history file %s\n", control->outfile), false);
 			/* Unlink temporary file as soon as possible */
@@ -1073,7 +1073,7 @@ bool get_fileinfo(rzip_control *control)
 	else if (STDIN)
 		fd_in = 0;
 	else {
-		fd_in = open(infilecopy, O_RDONLY);
+		fd_in = open(infilecopy, O_BINARY | O_RDONLY);
 		if (unlikely(fd_in == -1))
 			fatal_return(("Failed to open %s\n", infilecopy), false);
 	}
@@ -1333,7 +1333,7 @@ bool compress_file(rzip_control *control)
 			return false;
 		}
 
-        fd_in = open(control->infile, O_RDONLY);
+        fd_in = open(control->infile, O_BINARY | O_RDONLY);
 		if (unlikely(fd_in == -1))
 			fatal_return(("Failed to open %s\n", control->infile), false);
 	} 
@@ -1377,11 +1377,11 @@ bool compress_file(rzip_control *control)
 			print_output("Output filename is: %s\n", control->outfile);
 		}
 
-		fd_out = open(control->outfile, O_RDWR | O_CREAT | O_EXCL, 0666);
+		fd_out = open(control->outfile, O_BINARY | O_RDWR | O_CREAT | O_EXCL, 0666);
 		if (FORCE_REPLACE && (-1 == fd_out) && (EEXIST == errno)) {
 			if (unlikely(unlink(control->outfile)))
 				fatal_goto(("Failed to unlink an existing file: %s\n", control->outfile), error);
-			fd_out = open(control->outfile, O_RDWR | O_CREAT | O_EXCL, 0666);
+			fd_out = open(control->outfile, O_BINARY | O_RDWR | O_CREAT | O_EXCL, 0666);
 		}
 		if (unlikely(fd_out == -1)) {
 			/* We must ensure we don't delete a file that already
