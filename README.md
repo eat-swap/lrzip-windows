@@ -9,13 +9,24 @@ compression / decompression) or size, but not both.
 
 ### Build for MinGW targets
 
-To be filled in.
+ASM code from LZMA SDK is not working with MinGW, so you need to disable it:
+
+```shell
+export CFLAGS="YOUR_CFLAGS_HERE"
+export CXXFLAGS="YOUR_CXXFLAGS_HERE"
+
+./configure --disable-asm
+make
+```
+
+Please note that some features are removed (i.e. not available)
+when building for MinGW targets. See commit log for details.
 
 #### Special thanks
 
 - [mman-win32](https://github.com/alitrack/mman-win32) for the Windows mmap
   implementation. (MIT License)
-
+- [UtopicPanther](https://github.com/UtopicPanther) for porting guides.
 
 ### haneefmubarak's TL;DR for the long explanation:
 
