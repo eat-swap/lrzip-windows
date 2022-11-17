@@ -99,19 +99,19 @@ bool unlock_mutex(rzip_control *control, pthread_mutex_t *mutex)
 
 bool lock_mutex(rzip_control *control, pthread_mutex_t *mutex)
 {
-	if (unlikely(pthread_mutex_lock(mutex)))
-		fatal_return(("Failed to pthread_mutex_lock\n"), false);
-	return true;
-}
-
-static bool cond_wait(rzip_control *control, pthread_cond_t *cond, pthread_mutex_t *mutex)
-{
 	int ret = pthread_mutex_lock(mutex);
 
 	// See https://stackoverflow.com/questions/30511046/pthread-mutex-lock-returns-22-in-c
 	if (!ret || !(pthread_mutex_init(mutex, 0), pthread_mutex_lock(mutex)))
 		return true;
-	fatal_return(("Failed to pthread_cond_wait\n"), false);
+	fatal_return(("Failed to pthread_mutex_lock\n"), false);
+}
+
+static bool cond_wait(rzip_control *control, pthread_cond_t *cond, pthread_mutex_t *mutex)
+{
+	if (unlikely(pthread_cond_wait(cond, mutex)))
+		fatal_return(("Failed to pthread_cond_wait\n"), false);
+	return true;
 }
 
 static bool cond_broadcast(rzip_control *control, pthread_cond_t *cond)
