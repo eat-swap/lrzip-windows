@@ -307,7 +307,6 @@ int main(int argc, char *argv[])
 	bool lrzcat = false, compat = false, recurse = false;
 	bool options_file = false, conf_file_compression_set = false; /* for environment and tracking of compression setting */
 	struct timeval start_time, end_time;
-	struct sigaction handler;
 	double seconds,total_time; // for timers
 	bool nice_set = false;
 	int c, i;
@@ -669,12 +668,8 @@ recursion:
 		if (STDIN)
 			control->inFILE = stdin;
 
-		/* Implement signal handler only once flags are set */
-		sigemptyset(&handler.sa_mask);
-		handler.sa_flags = 0;
-		handler.sa_handler = &sighandler;
-		sigaction(SIGTERM, &handler, 0);
-		sigaction(SIGINT, &handler, 0);
+		signal(SIGTERM, sighandler);
+		signal(SIGINT, sighandler);
 
 		if (!FORCE_REPLACE) {
 			if (STDIN && isatty(fileno((FILE *)stdin))) {
