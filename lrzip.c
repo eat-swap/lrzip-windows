@@ -562,7 +562,6 @@ static bool read_tmpinmagic(rzip_control *control)
 bool read_tmpinfile(rzip_control *control, int fd_in)
 {
 	FILE *tmpinfp;
-	int tmpchar;
 	char* buf;
 
 	if (fd_in == -1)
@@ -791,7 +790,7 @@ bool decompress_file(rzip_control *control)
 {
 	char *tmp, *tmpoutfile, *infilecopy = NULL;
 	int fd_in, fd_out = -1, fd_hist = -1;
-	i64 expected_size = 0, free_space;
+	i64 expected_size = 0;
 
 	if (!STDIN && !IS_FROM_FILE) {
 		struct stat fdin_stat;
