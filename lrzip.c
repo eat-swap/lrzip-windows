@@ -912,15 +912,9 @@ bool decompress_file(rzip_control *control)
 	if (!STDOUT && !TEST_ONLY) {
 		/* Check if there's enough free space on the device chosen to fit the
 		* decompressed file. */
-		if (unlikely(fstatvfs(fd_out, &fbuf)))
-			fatal_return(("Failed to fstatvfs in decompress_file\n"), false);
-		free_space = (i64)fbuf.f_bsize * (i64)fbuf.f_bavail;
-		if (free_space < expected_size) {
-			if (FORCE_REPLACE)
-				print_err("Warning, inadequate free space detected, but attempting to decompress due to -f option being used.\n");
-			else
-				failure_return(("Inadequate free space to decompress file, use -f to override.\n"), false);
-		}
+
+		// todo: native methods to check
+		print_err("Skipped space checking under native Windows.\n");
 	}
 	control->fd_out = fd_out;
 	control->fd_hist = fd_hist;
