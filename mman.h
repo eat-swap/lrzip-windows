@@ -2,7 +2,7 @@
  * sys/mman.h
  * mman-win32
  */
-
+#if defined(_WIN32) || defined(_WIN64)
 #ifndef _SYS_MMAN_H_
 #define _SYS_MMAN_H_
 
@@ -74,3 +74,5 @@ MMANSHARED_EXPORT int     munlock(const void *addr, size_t len);
 #endif
 
 #endif /*  _SYS_MMAN_H_ */
+
+#endif /* _WIN32 || _WIN64 */

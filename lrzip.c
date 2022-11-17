@@ -51,6 +51,11 @@
 #include "util.h"
 #include "stream.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <Windows.h>
+#include "mman.h"
+#endif
+
 #define MAGIC_LEN (24)
 #define STDIO_TMPFILE_BUFFER_SIZE (65536) // used in read_tmpinfile and dump_tmpoutfile
 
@@ -72,7 +77,6 @@ static i64 fdout_seekto(rzip_control *control, i64 pos)
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <stdint.h>
-#include <Windows.h>
 i64 get_ram(rzip_control* ignored) {
 	uint64_t ret;
 	GetPhysicallyInstalledSystemMemory(&ret);

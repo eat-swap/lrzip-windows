@@ -59,6 +59,10 @@
 /* needed for CRC routines */
 #include "lzma/C/7zCrc.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "mman.h"
+#endif
+
 #ifndef MAP_ANONYMOUS
 # define MAP_ANONYMOUS MAP_ANON
 #endif
