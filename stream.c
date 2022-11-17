@@ -1314,7 +1314,6 @@ static void *compthread(void *data)
 
 	/* Flushing writes to disk frees up any dirty ram, improving chances
 	 * of succeeding in allocating more ram */
-	fsync(ctis->fd);
 
 	/* This is a cludge in case we are compressing to stdout and our first
 	 * stream is not compressed, but subsequent ones are compressed by
@@ -1686,7 +1685,6 @@ fill_another:
 
 	padded_len = MAX(c_len, MIN_SIZE);
 	sinfo->total_read += padded_len;
-	fsync(control->fd_out);
 
 	if (unlikely(u_len > control->maxram))
 		print_output("Warning, attempting to malloc very large buffer for this environment of size %lld\n", u_len);

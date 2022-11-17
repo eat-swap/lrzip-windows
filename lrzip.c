@@ -423,7 +423,6 @@ static bool dump_tmpoutfile(rzip_control *control)
 	if (unlikely(fd_out == -1))
 		fatal_return(("Failed: No temporary outfile created, unable to do in ram\n"), false);
 	/* flush anything not yet in the temporary file */
-	fsync(fd_out);
 	tmpoutfp = fdopen(fd_out, "r");
 	if (unlikely(tmpoutfp == NULL))
 		fatal_return(("Failed to fdopen out tmpfile\n"), false);
