@@ -7,6 +7,18 @@ effectively compress your files (ie: faster / smaller size), especially if the
 filesize(s) exceed 100 MB. You can either choose to optimise for speed (fast
 compression / decompression) or size, but not both.
 
+### Build on MSYS2
+
+This branch is for building on MSYS2 platform. To build, you should disable
+ASM code in lzma SDK and disable JIT in libzpaq as they are not functioning
+properly.
+
+```shell
+export CFLAGS="-Wall -DNOJIT $CFLAGS"
+export CXXFLAGS="-Wall -DNOJIT $CXXFLAGS"  # libzpaq
+./autogen.sh --disable-asm
+make
+```
 
 ### haneefmubarak's TL;DR for the long explanation:
 
