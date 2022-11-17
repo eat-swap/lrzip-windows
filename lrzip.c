@@ -26,17 +26,13 @@
 # include <sys/stat.h>
 #endif
 #include <fcntl.h>
-#include <sys/statvfs.h>
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-#include <arpa/inet.h>
 #ifdef HAVE_ERRNO_H
 #include <errno.h>
 #endif
-#include <sys/mman.h>
 #include <sys/time.h>
-#include <termios.h>
 #ifdef HAVE_ENDIAN_H
 # include <endian.h>
 #elif HAVE_SYS_ENDIAN_H
@@ -700,7 +696,6 @@ static int get_pass(rzip_control *control, char *s)
 static bool get_hash(rzip_control *control, int make_hash)
 {
 	char *passphrase, *testphrase;
-	struct termios termios_p;
 	int prompt = control->passphrase == NULL;
 
 	passphrase = calloc(PASS_LEN, 1);
@@ -732,9 +727,7 @@ static bool get_hash(rzip_control *control, int make_hash)
 		control->salt_pass_len = strlen(passphrase) + SALT_LEN;
 	} else {
 		/* Disable stdin echo to screen */
-		tcgetattr(fileno(stdin), &termios_p);
-		termios_p.c_lflag &= ~ECHO;
-		tcsetattr(fileno(stdin), 0, &termios_p);
+		// Skipping disable as termios unavailable.
 retry_pass:
 		if (prompt)
 			print_output("Enter passphrase: ");
@@ -752,8 +745,6 @@ retry_pass:
 				goto retry_pass;
 			}
 		}
-		termios_p.c_lflag |= ECHO;
-		tcsetattr(fileno(stdin), 0, &termios_p);
 		memset(testphrase, 0, PASS_LEN);
 	}
 	memcpy(control->salt_pass, control->salt, SALT_LEN);
