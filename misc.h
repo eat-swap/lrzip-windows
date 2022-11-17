@@ -10,6 +10,8 @@ int get_random_32();
 
 void init_rand();
 
+unsigned int get_threads();
+
 #ifdef __cplusplus
 };
 #endif // __cplusplus

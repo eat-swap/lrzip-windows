@@ -2,6 +2,7 @@
 
 #include <random>
 #include <chrono>
+#include <thread>
 
 static std::mt19937* generator;
 
@@ -17,4 +18,8 @@ int get_random_16() {
 
 int get_random_32() {
 	return generator->operator()();
+}
+
+unsigned int get_threads() {
+	return std::thread::hardware_concurrency();
 }

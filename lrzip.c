@@ -55,6 +55,7 @@
 #include <Windows.h>
 #include "mman.h"
 #endif
+#include "misc.h"
 
 #define MAGIC_LEN (24)
 #define STDIO_TMPFILE_BUFFER_SIZE (65536) // used in read_tmpinfile and dump_tmpoutfile
@@ -1466,7 +1467,7 @@ bool initialise_control(rzip_control *control)
 	if (unlikely(control->ramsize == -1))
 		return false;
 	/* for testing single CPU */
-	control->threads = PROCESSORS;	/* get CPUs for LZMA */
+	control->threads = get_threads();	/* get CPUs for LZMA */
 	control->page_size = PAGE_SIZE;
 	control->nice_val = 19;
 
