@@ -953,7 +953,6 @@ void rzip_fd(rzip_control *control, int fd_in, int fd_out)
 	double chunkmbs, tdiff;
 	struct rzip_state *st;
 	struct stat s, s2;
-	i64 free_space;
 
 	init_mutex(control, &control->control_lock);
 	if (!NO_MD5)
