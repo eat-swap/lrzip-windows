@@ -70,7 +70,15 @@ static i64 fdout_seekto(rzip_control *control, i64 pos)
 	return lseek(control->fd_out, pos, SEEK_SET);
 }
 
-#ifdef __APPLE__
+#if defined(_WIN32) || defined(_WIN64)
+#include <stdint.h>
+#include <Windows.h>
+i64 get_ram(rzip_control* ignored) {
+	uint64_t ret;
+	GetPhysicallyInstalledSystemMemory(&ret);
+	return ret << 10;
+}
+#elif defined(__APPLE__)
 # include <sys/sysctl.h>
 i64 get_ram(rzip_control *control)
 {
