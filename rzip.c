@@ -27,7 +27,6 @@
 #ifdef HAVE_SYS_MMAN_H
 # include <sys/mman.h>
 #endif
-#include <sys/statvfs.h>
 #ifdef HAVE_SYS_STAT_H
 # include <sys/stat.h>
 #endif
@@ -953,7 +952,6 @@ void rzip_fd(rzip_control *control, int fd_in, int fd_out)
 	int pass = 0, passes, j;
 	double chunkmbs, tdiff;
 	struct rzip_state *st;
-	struct statvfs fbuf;
 	struct stat s, s2;
 	i64 free_space;
 
@@ -989,19 +987,9 @@ void rzip_fd(rzip_control *control, int fd_in, int fd_out)
 		/* Check if there's enough free space on the device chosen to fit the
 		* compressed file, based on the compressed file being as large as the
 		* uncompressed file. */
-		if (unlikely(fstatvfs(fd_out, &fbuf))) {
-			dealloc(st);
-			failure("Failed to fstatvfs in compress_file\n");
-		}
-		free_space = (i64)fbuf.f_bsize * (i64)fbuf.f_bavail;
-		if (free_space < control->st_size) {
-			if (FORCE_REPLACE)
-				print_output("Warning, possibly inadequate free space detected, but attempting to compress due to -f option being used.\n");
-			else {
-				dealloc(st);
-				failure("Possibly inadequate free space to compress file, use -f to override.\n");
-			}
-		}
+		// todo: native methods to check
+		print_err("Skipped space checking under native Windows.\n");
+
 	}
 
 	/* Optimal use of ram involves using no more than 2/3 of it, so we
